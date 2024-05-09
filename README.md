@@ -1,8 +1,8 @@
 # MaskCycleGAN-VC Experiment
 
-본 레포지토리는 아래 링크의 original code를 쉽게 실험할 수 있도록 수정한 버전입니다.
+본 레포지토리는 원본 코드를 쉽게 실험할 수 있도록 수정한 버전입니다.
 
-코드에 대해 자세히 이해하고 싶으시다면 paper와 original repo link를 참고해주세요.
+코드에 대해 자세히 이해하고 싶으시다면 아래의 paper 및 original repo link를 참고해주세요.
 
 Paper: https://arxiv.org/pdf/2102.12841.pdf
 
