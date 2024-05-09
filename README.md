@@ -21,7 +21,7 @@ cd MaskCycleGAN-VC
 아나콘다 환경 설정 및 필요 패키지 설치
 
 ```
-conda create -n MaskCycleGAN-VC python==3.9.2
+conda env create -f environment.yml
 conda activate MaskCycleGAN-VC
 pip install -r requirements.txt
 ```
@@ -54,11 +54,11 @@ vcc2018_evaluation -> 모델 테스트에 사용되는 데이터셋
 ## 데이터 전처리
 
 ```
-python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018_training --preprocessed_data_directory vcc2018_preprocessed/vcc2018_training --speaker_ids VCC2SF1 VCC2SF2 VCC2SF3 VCC2SF4 VCC2SM1 VCC2SM2 VCC2SM3 VCC2SM4 VCC2TF1 VCC2TF2 VCC2TM1 VCC2TM2
+python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018_training --preprocessed_data_directory vcc2018_preprocessed/vcc2018_training --speaker_ids VCC2SF2 VCC2SM2
 ```
 
 ```
-python data_preprocessing/preprocess_vcc2018.py data_directory vcc2018/vcc2018_evaluation preprocessed_data_directory vcc2018_preprocessed/vcc2018_evaluation speaker_ids VCC2SF1 VCC2SF2 VCC2SF3 VCC2SF4 VCC2SM1 VCC2SM2 VCC2SM3 VCC2SM4 VCC2TF1 VCC2TF2 VCC2TM1 VCC2TM2
+python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018_evaluation --preprocessed_data_directory vcc2018_preprocessed/vcc2018_evaluation --speaker_ids VCC2SF2 VCC2SM2
 ```
 
 `--speaker_ids`의 화자 데이터셋이 전처리됩니다.
@@ -69,10 +69,8 @@ python data_preprocessing/preprocess_vcc2018.py data_directory vcc2018/vcc2018_e
 `<speaker_A_id>`를 source로 `<speaker_B_id>`를 target으로 하는 모델을 학습시킵니다. 최소 수백 epoch 이상의 학습을 권장합니다.
 
 ```
-python -W ignore::UserWarning -m mask_cyclegan_vc.train --name mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B> --seed 0 --save_dir results --preprocessed_data_dir vcc2018_preprocessed/vcc2018_training --speaker_A_id <speaker_A_id> --speaker_B_id <speaker_B_id> --epochs_per_save 10 --epochs_per_plot 10 --num_epochs 6172 --batch_size 1 --lr 5e-4 --decay_after 1e4 --sample_rate 22050 --num_frames 64 --max_mask_len 25 --gpu_ids 0
+python -W ignore::UserWarning -m mask_cyclegan_vc.train --name mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B> --seed 0 --save_dir results --preprocessed_data_dir vcc2018_preprocessed/vcc2018_training --speaker_A_id <speaker_A_id> --speaker_B_id <speaker_B_id> --epochs_per_save 10 --epochs_per_plot 10 --num_epochs 6172 --batch_size 1 --decay_after 1e4 --sample_rate 22050 --num_frames 64 --max_mask_len 25 --gpu_ids 0
 ```
-
-위 코드 뒤에 `--continue_train`을 추가하시면 최신 epoch에 이어서 학습이 진행됩니다.
 
 
 ## 모델 테스트 (오디오 생성)
