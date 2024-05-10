@@ -78,8 +78,9 @@ python -W ignore::UserWarning -m mask_cyclegan_vc.train --name mask_cyclegan_vc_
 
 학습/테스트 데이터 에러 그래프 생성/확인 방법: 
 
-`'/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>.log'`파일 값을 make_loss_graph.py 파일의 data에 삽입 후 해당 파이썬 파일 실행
-
+1. `'/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>.log'`파일 값을 make_loss_graph.py 파일의 data에 삽입 후 해당 파이썬 파일 실행
+2. `python make_loss_graph`
+   
 ```
 <노트북/서버에서 각각 학습 시간 (6172epoch 기준)>
 
