@@ -23,7 +23,6 @@ cd MaskCycleGAN-VC
 ```
 conda env create -f environment.yml
 conda activate MaskCycleGAN-VC
-pip install -r requirements.txt
 ```
 
 
@@ -45,7 +44,7 @@ https://datashare.ed.ac.uk/handle/10283/3061
 
 </p>
 
-추가로 개별적인 데이터셋을 학습에 이용하시려면, vcc2018_evaluation 폴더와 vcc2018_training 폴더 아래에 원하시는 화자 이름을 폴더를 생성하신 후, 그 안에 해당 화자의 wav파일를 넣어주시면 됩니다.
+추가로 개별적인 데이터셋을 학습에 이용하시려면, vcc2018_evaluation 폴더와 vcc2018_training 폴더 아래에 원하시는 화자 이름으로 폴더를 생성하신 후, 그 안에 해당 화자의 wav파일를 넣어주시면 됩니다.
 
 vcc2018_training -> 모델 훈련에 사용되는 데이터셋
 
@@ -61,9 +60,10 @@ python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018
 python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018_evaluation --preprocessed_data_directory vcc2018_preprocessed/vcc2018_evaluation --speaker_ids VCC2SF2 VCC2SM2
 ```
 
-`--speaker_ids`의 화자 데이터셋이 전처리됩니다.
+--speaker_ids 뒤에 적은 화자의 데이터셋이 전처리됩니다.
 
-전처리 데이터 저장 위치: `'/vcc2018_preprocessed/vcc2018_evaluation', '/vcc2018_preprocessed/vcc2018_training'`
+### 전처리 데이터 저장 위치: 
+`'/vcc2018_preprocessed/vcc2018_evaluation', '/vcc2018_preprocessed/vcc2018_training'`
 
 
 ## 모델 학습
@@ -74,17 +74,20 @@ python data_preprocessing/preprocess_vcc2018.py --data_directory vcc2018/vcc2018
 python -W ignore::UserWarning -m mask_cyclegan_vc.train --name mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B> --seed 0 --save_dir results --preprocessed_data_dir vcc2018_preprocessed/vcc2018_training --speaker_A_id <speaker_A_id> --speaker_B_id <speaker_B_id> --epochs_per_save 10 --epochs_per_plot 10 --num_epochs 6172 --batch_size 1 --decay_after 1e4 --sample_rate 22050 --num_frames 64 --max_mask_len 25 --gpu_ids 0
 ```
 
-학습된 모델 저장 위치: `'/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/ckpts'`
+### 학습된 모델 저장 위치: 
+`'/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/ckpts'`
 
-학습/테스트 데이터 에러 그래프 생성/확인 방법: 
+### 학습/테스트 데이터 에러 그래프 생성/확인 방법: 
 
-1. `'/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>.log'`파일 값을 make_loss_graph.py 파일의 data에 삽입 후 해당 파이썬 파일 실행
-2. `python make_loss_graph`
+1. `/results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>.log` 파일의 모든 값을 복사하여 loss_graph.py 파일의 data에 붙여넣기
+2. `python loss_graph.py`
    
-```
-<노트북/서버에서 각각 학습 시간 (6172epoch 기준)>
 
-화자 2명(one-to-one), 화자당 81문장의 경우: 노트븍(cpu): 대략 520시간, 서버(gpu): 52시간
+### 노트북/서버에서 각각 학습 시간 (6172epoch 기준)
+
+```
+화자 2명(one-to-one), 화자당 81문장의 경우: 
+노트븍(cpu): 대략 520시간, 서버(gpu): 52시간
 ```
 
 ## 모델 테스트 (오디오 생성)
@@ -94,14 +97,11 @@ python -W ignore::UserWarning -m mask_cyclegan_vc.train --name mask_cyclegan_vc_
 converted audio는 다음 위치에 저장됩니다. `results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/converted_audio`.
 
 ```
-python -W ignore::UserWarning -m mask_cyclegan_vc.test --name mask_cyclegan_vc_<speaker_A_id>_<speaker_B_id> 
---save_dir results/ --preprocessed_data_dir vcc2018_preprocessed/vcc2018_evaluation --gpu_ids 0 --speaker_A_id <speaker_A_id> --speaker_B_id <speaker_B_id> --ckpt_dir /data1/cycleGAN_VC3/mask_cyclegan_vc_<speaker_A_id>_<speaker_B_id>/ckpts --load_epoch <recent epoch> --model_name generator_A2B
+python -W ignore::UserWarning -m mask_cyclegan_vc.test --name mask_cyclegan_vc_<speaker_A_id>_<speaker_B_id> --save_dir results/ --preprocessed_data_dir vcc2018_preprocessed/vcc2018_evaluation --gpu_ids 0 --speaker_A_id <speaker_A_id> --speaker_B_id <speaker_B_id> --ckpt_dir results/mask_cyclegan_vc_<speaker_A_id>_<speaker_B_id>/ckpts --load_epoch <recent epoch> --model_name generator_A2B
 ```
 
-MCD 확인 방법: 
-- target 화자가 source의 문장을 말한 wav파일이 gt_wav가 됩니다.
-- ex) A화자의 1번 문장을 Source로 B화자의 2번문장을 Target으로 Voice Conversion을 진행한 경우, B화자의 1번 문장이 gt_wav가 되며, 모델을 통해 변환한 음성이 converted_wav가 됩니다.
-- gt_wav와 converted_wav의 mcd값을 측정
+### MCD 확인 방법: 
+
 ```
 # 새로운 conda 환경 생성 및 python 파일 실행
 conda create -n mcd python==3.8
@@ -110,5 +110,11 @@ pip install pymcd tqdm
 # 'cal_pymcd.py'에서 GT path와 Converted path 설정 후
 python cal_pymcd.py
 ```
+- 위 방법을 따라 cal_pymacd.py 실행
+- target 화자가 source의 문장을 말한 wav파일이 gt_wav가 됩니다.
+- ex) A화자의 1번 문장을 Source로 B화자의 2번문장을 Target으로 Voice Conversion을 진행한 경우, B화자의 1번 문장이 gt_wav가 되며, 모델을 통해 변환한 음성이 converted_wav가 됩니다.
+- gt_wav와 converted_wav의 mcd값을 측정
 
-결과 파일 재생 방법: `results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/converted_audio`에서 원하는 wav파일을 다운받아 재생
+
+### 결과 파일 재생 방법: 
+`results/mask_cyclegan_vc_<speaker_id_A>_<speaker_id_B>/converted_audio`에서 원하는 wav파일을 다운받아 재생

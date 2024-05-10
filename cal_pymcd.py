@@ -7,8 +7,8 @@ from tqdm import tqdm
 import pprint
 
 
-#gt_wav='results/outputs/mask_cyclegan_vc_VCC2SM3_VCC2SF3/converted_audio/0-original_VCC2SM3_to_VCC2SF3.wav' 
-#converted_wav='results/outputs/mask_cyclegan_vc_VCC2SM3_VCC2SF3/converted_audio/0-converted_VCC2SM3_to_VCC2SF3.wav'
+#gt_wav='results/mask_cyclegan_vc_VCC2SF2_VCC2SM2/converted_audio/0-original_VCC2SF2_to_VCC2SM2.wav' 
+#converted_wav='results/mask_cyclegan_vc_VCC2SF2_VCC2SM2/converted_audio/0-converted_VCC2SF2_to_VCC2SM2.wav'
 
 
 gt_wav='' 
