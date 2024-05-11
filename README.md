@@ -113,7 +113,7 @@ python cal_pymcd.py
 - 위 방법을 따라 cal_pymacd.py 실행
 - target 화자가 source의 문장을 말한 wav파일이 gt_wav가 됩니다.
 - ex) A화자의 1번 문장을 Source로 B화자의 2번문장을 Target으로 Voice Conversion을 진행한 경우, B화자의 1번 문장이 gt_wav가 되며, 모델을 통해 변환한 음성이 converted_wav가 됩니다.
-- gt_wav와 converted_wav의 mcd값을 측정
+- gt_wav와 converted_wav의 mcd값을 측정 
 
 
 ### 결과 파일 재생 방법: 
